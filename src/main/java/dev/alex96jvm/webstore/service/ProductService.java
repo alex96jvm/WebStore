@@ -5,10 +5,15 @@ import dev.alex96jvm.webstore.mapper.ProductMapper;
 import dev.alex96jvm.webstore.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
+@Validated
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
@@ -20,7 +25,7 @@ public class ProductService {
                 .toList();
     }
 
-    public Optional<ProductDto> getProductById(Long id) {
+    public Optional<ProductDto> getProductById(@Positive Long id) {
         return productRepository.findById(id)
                 .map(productMapper::productEntityToProductDto);
     }

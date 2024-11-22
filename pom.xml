@@ -10,10 +10,12 @@
         <org.springframework.version>5.3.30</org.springframework.version>
         <org.springframework.data.version>2.5.0</org.springframework.data.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
-        <com.fasterxml.jackson.core.version>2.15.2</com.fasterxml.jackson.core.version>
+        <javax.validation.version>2.0.1.Final</javax.validation.version>
+        <org.hibernate.validator.version>6.2.0.Final</org.hibernate.validator.version>
         <org.hibernate.version>5.4.32.Final</org.hibernate.version>
-        <org.org.hibernate.javax.persistence.version>1.0.2.Final</org.org.hibernate.javax.persistence.version>
+        <com.zaxxer.version>5.0.1</com.zaxxer.version>
         <org.liquibase.version>4.30.0</org.liquibase.version>
+        <com.fasterxml.jackson.core.version>2.15.2</com.fasterxml.jackson.core.version>
         <org.projectlombok.version>1.18.30</org.projectlombok.version>
         <org.mapstruct.version>1.6.2</org.mapstruct.version>
         <org.postgresql.version>42.7.4</org.postgresql.version>
@@ -34,16 +36,15 @@
             <artifactId>spring-context</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${com.fasterxml.jackson.core.version}</version>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${org.springframework.data.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -52,19 +53,24 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>5.0.1</version>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javax.validation.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>${org.springframework.data.version}</version>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${org.hibernate.validator.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${org.hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>${com.zaxxer.version}</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>

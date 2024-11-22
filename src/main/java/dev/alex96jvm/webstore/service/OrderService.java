@@ -8,18 +8,25 @@ import dev.alex96jvm.webstore.entity.OrderEntity;
 import dev.alex96jvm.webstore.entity.ProductEntity;
 import dev.alex96jvm.webstore.entity.SaleEntity;
 import dev.alex96jvm.webstore.entity.SaleId;
+import dev.alex96jvm.webstore.exception.OrderNotFoundException;
 import dev.alex96jvm.webstore.mapper.OrderMapper;
 import dev.alex96jvm.webstore.repository.OrderRepository;
 import dev.alex96jvm.webstore.repository.ProductRepository;
 import dev.alex96jvm.webstore.repository.SaleRepository;
+import dev.alex96jvm.webstore.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class OrderService {
     private final ProductRepository productRepository;
@@ -27,17 +34,17 @@ public class OrderService {
     private final SaleRepository saleRepository;
     private final OrderMapper orderMapper;
 
-    public List<OrderDto> getOrders(String customerName) {
+    public List<OrderDto> getOrders(@Size(min = 3, max = 30) String customerName) {
         return orderRepository.findByCustomerName(customerName).stream()
                 .map(orderMapper::orderEntityToOrderDto)
                 .toList();
     }
 
     @Transactional
-    public OrderResponseDto createOrder (OrderRequestDto orderRequestDto) {
+    public OrderResponseDto createOrder (@Valid OrderRequestDto orderRequestDto) {
         Long productId = orderRequestDto.getProductId();
         ProductEntity productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + productId));
+                .orElseThrow(ProductNotFoundException::new);
 
         OrderEntity orderEntity = orderRepository.save(
                 new OrderEntity(orderRequestDto.getCustomerName())
@@ -50,16 +57,16 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponseDto updateOrder(OrderUpdateRequestDto orderUpdateRequestDto) {
+    public OrderResponseDto updateOrder(@Valid OrderUpdateRequestDto orderUpdateRequestDto) {
         UUID orderId = orderUpdateRequestDto.getOrderId();
         OrderEntity orderEntity = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("Order not found with ID: " + orderId));
+                .orElseThrow(OrderNotFoundException::new);
         orderEntity.setOrderDate(LocalDate.now());
         orderRepository.save(orderEntity);
 
         Long productId = orderUpdateRequestDto.getProductId();
         ProductEntity productEntity = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with ID: " + productId));
+                .orElseThrow(ProductNotFoundException::new);
 
         SaleId saleId = new SaleId(orderEntity.getId(), productEntity.getId());
         SaleEntity saleEntity = new SaleEntity(saleId, orderUpdateRequestDto.getProductQuantity(), productEntity, orderEntity);
@@ -67,7 +74,7 @@ public class OrderService {
         return new OrderResponseDto(orderEntity.getId(), productEntity.getName(), saleEntity.getProductQuantity());
     }
 
-    public Boolean deleteOrder(OrderDto orderDto) {
+    public Boolean deleteOrder(@Valid OrderDto orderDto) {
         UUID id = orderDto.getId();
         if (orderRepository.existsById(id)) {
             orderRepository.deleteById(id);

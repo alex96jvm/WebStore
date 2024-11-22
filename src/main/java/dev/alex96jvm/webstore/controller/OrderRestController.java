@@ -18,33 +18,18 @@ public class OrderRestController {
     private final OrderService orderService;
 
     @GetMapping()
-    public ResponseEntity<?> getOrders(@RequestParam String customerName) {
-        try {
-            List<OrderDto> orders = orderService.getOrders(customerName);
-            return ResponseEntity.ok(orders);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка: " + e.getMessage());
-        }
+    public ResponseEntity<List<OrderDto>> getOrders(@RequestParam String customerName) {
+        return ResponseEntity.ok(orderService.getOrders(customerName));
     }
 
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
-        try {
-            OrderResponseDto orderResponseDto = orderService.createOrder(orderRequestDto);
-            return ResponseEntity.ok(orderResponseDto);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка: " + e.getMessage());
-        }
+    public ResponseEntity<OrderResponseDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
+        return ResponseEntity.ok(orderService.createOrder(orderRequestDto));
     }
 
     @PutMapping()
-    public ResponseEntity<?> updateOrder(@RequestBody OrderUpdateRequestDto orderUpdateRequestDto) {
-        try {
-            OrderResponseDto orderResponseDto = orderService.updateOrder(orderUpdateRequestDto);
-            return ResponseEntity.ok(orderResponseDto);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка: " + e.getMessage());
-        }
+    public ResponseEntity<OrderResponseDto> updateOrder(@RequestBody OrderUpdateRequestDto orderUpdateRequestDto) {
+        return ResponseEntity.ok(orderService.updateOrder(orderUpdateRequestDto));
     }
 
     @DeleteMapping

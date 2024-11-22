@@ -20,22 +20,13 @@ public class SaleRestController {
 
     @PostMapping("customer")
     public ResponseEntity<?> getSalesByCustomerName(@RequestBody OrderRequestDto orderRequestDto) {
-        try {
             List<SalesResponseDto> list = saleService.getSalesByCustomerName(orderRequestDto.getCustomerName());
             return ResponseEntity.ok(list);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка: " + e.getMessage());
-        }
     }
 
     @PostMapping("product")
     public ResponseEntity<?> getSalesByProductId(@RequestBody OrderRequestDto orderRequestDto) {
-        try {
             List<SalesResponseDto> list = saleService.getSalesByProductId(orderRequestDto.getProductId());
             return ResponseEntity.ok(list);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка: " + e.getMessage());
-        }
     }
-
 }
