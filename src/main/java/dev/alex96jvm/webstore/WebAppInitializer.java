@@ -1,12 +1,14 @@
-package dev.alex96jvm.webstore.config;
+package dev.alex96jvm.webstore;
 
+import dev.alex96jvm.webstore.config.LiquibaseConfig;
+import dev.alex96jvm.webstore.config.WebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{LiquibaseConfig.class, ValidationConfig.class};
+        return new Class[]{LiquibaseConfig.class};
     }
 
     @Override

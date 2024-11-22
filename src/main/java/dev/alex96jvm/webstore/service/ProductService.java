@@ -6,7 +6,6 @@ import dev.alex96jvm.webstore.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-
 import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Optional;

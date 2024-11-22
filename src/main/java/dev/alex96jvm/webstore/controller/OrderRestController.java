@@ -22,7 +22,7 @@ public class OrderRestController {
         return ResponseEntity.ok(orderService.getOrders(customerName));
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<OrderResponseDto> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
         return ResponseEntity.ok(orderService.createOrder(orderRequestDto));
     }
@@ -32,7 +32,7 @@ public class OrderRestController {
         return ResponseEntity.ok(orderService.updateOrder(orderUpdateRequestDto));
     }
 
-    @DeleteMapping
+    @DeleteMapping()
     public Boolean deleteOrder(@RequestBody OrderDto orderDto) {
         return orderService.deleteOrder(orderDto);
     }

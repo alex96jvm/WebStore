@@ -19,13 +19,13 @@ public class SaleRestController {
     private final SaleService saleService;
 
     @PostMapping("customer")
-    public ResponseEntity<?> getSalesByCustomerName(@RequestBody OrderRequestDto orderRequestDto) {
+    public ResponseEntity<List<SalesResponseDto>> getSalesByCustomerName(@RequestBody OrderRequestDto orderRequestDto) {
             List<SalesResponseDto> list = saleService.getSalesByCustomerName(orderRequestDto.getCustomerName());
             return ResponseEntity.ok(list);
     }
 
     @PostMapping("product")
-    public ResponseEntity<?> getSalesByProductId(@RequestBody OrderRequestDto orderRequestDto) {
+    public ResponseEntity<List<SalesResponseDto>> getSalesByProductId(@RequestBody OrderRequestDto orderRequestDto) {
             List<SalesResponseDto> list = saleService.getSalesByProductId(orderRequestDto.getProductId());
             return ResponseEntity.ok(list);
     }
