@@ -27,11 +27,11 @@ public class JdbcTemplateSalesRepository {
                     s.product_quantity,
                     (p.price * s.product_quantity) AS total_price
                 FROM
-                    sales s
+                    sale s
                 JOIN
-                    products p ON s.product_id = p.id
+                    product p ON s.product_id = p.id
                 JOIN
-                    orders o ON s.order_id = o.id
+                    order o ON s.order_id = o.id
                 WHERE
                     o.customer_name = ?;
                 """;
@@ -49,11 +49,11 @@ public class JdbcTemplateSalesRepository {
                     s.product_quantity,
                     (p.price * s.product_quantity) AS total_price
                 FROM
-                    sales s
+                    sale s
                 JOIN
-                    products p ON s.product_id = p.id
+                    product p ON s.product_id = p.id
                 JOIN
-                    orders o ON s.order_id = o.id
+                    order o ON s.order_id = o.id
                 WHERE
                     s.product_id = ?;
                 """;

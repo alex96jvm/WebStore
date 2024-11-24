@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "order")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,8 +22,15 @@ public class OrderEntity {
     private LocalDate orderDate;
     @Column(name = "customer_name")
     private String customerName;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleEntity> sales;
+    @ManyToMany
+    @JoinTable(
+            name = "order_product",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<ProductEntity> products;
 
     public OrderEntity(String customerName) {
         this.customerName = customerName;

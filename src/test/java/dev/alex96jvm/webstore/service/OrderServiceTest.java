@@ -30,8 +30,6 @@ public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
     @Mock
-    private SaleRepository saleRepository;
-    @Mock
     private OrderMapper orderMapper;
     @InjectMocks
     private OrderService orderService;
@@ -56,7 +54,6 @@ public class OrderServiceTest {
         orderRequestDto.setCustomerName("Sidorov");
         when(productRepository.findById(1L)).thenReturn(Optional.of(productEntity));
         when(orderRepository.save(any(OrderEntity.class))).thenReturn(orderEntity);
-        when(saleRepository.save(any(SaleEntity.class))).thenReturn(new SaleEntity(new SaleId(orderEntity.getId(), productEntity.getId()), 2, productEntity, orderEntity));
 
         OrderResponseDto result = orderService.createOrder(orderRequestDto);
 
@@ -66,7 +63,6 @@ public class OrderServiceTest {
         assertEquals(2, result.getProductQuantity());
         verify(productRepository, times(1)).findById(1L);
         verify(orderRepository, times(1)).save(any(OrderEntity.class));
-        verify(saleRepository, times(1)).save(any(SaleEntity.class));
     }
 
     @Test
@@ -79,7 +75,6 @@ public class OrderServiceTest {
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(orderEntity));
         when(productRepository.findById(1L)).thenReturn(Optional.of(productEntity));
         when(orderRepository.save(any(OrderEntity.class))).thenReturn(orderEntity);
-        when(saleRepository.save(any(SaleEntity.class))).thenReturn(new SaleEntity(new SaleId(orderEntity.getId(), productEntity.getId()), 3, productEntity, orderEntity));
 
         OrderResponseDto result = orderService.updateOrder(orderUpdateRequestDto);
 
@@ -90,7 +85,6 @@ public class OrderServiceTest {
         verify(orderRepository, times(1)).findById(orderId);
         verify(productRepository, times(1)).findById(1L);
         verify(orderRepository, times(1)).save(any(OrderEntity.class));
-        verify(saleRepository, times(1)).save(any(SaleEntity.class));
     }
 
     @Test

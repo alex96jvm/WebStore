@@ -1,11 +1,10 @@
 package dev.alex96jvm.webstore.entity;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "sales")
+@Table(name = "sale")
 @Getter
 @Setter
 @NoArgsConstructor

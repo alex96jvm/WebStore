@@ -31,7 +31,6 @@ import java.util.UUID;
 public class OrderService {
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
-    private final SaleRepository saleRepository;
     private final OrderMapper orderMapper;
 
     public List<OrderDto> getOrders(@Size(min = 3, max = 30) String customerName) {
@@ -41,18 +40,19 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderResponseDto createOrder (@Valid OrderRequestDto orderRequestDto) {
+    public OrderResponseDto createOrder(@Valid OrderRequestDto orderRequestDto) {
         Long productId = orderRequestDto.getProductId();
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
-
-        OrderEntity orderEntity = orderRepository.save(
-                new OrderEntity(orderRequestDto.getCustomerName())
+        OrderEntity orderEntity = new OrderEntity(orderRequestDto.getCustomerName());
+        SaleEntity saleEntity = new SaleEntity(
+                new SaleId(orderEntity.getId(), productEntity.getId()),
+                orderRequestDto.getProductQuantity(),
+                productEntity,
+                orderEntity
         );
-
-        SaleId saleId = new SaleId(orderEntity.getId(), productEntity.getId());
-        SaleEntity saleEntity = new SaleEntity(saleId, orderRequestDto.getProductQuantity(), productEntity, orderEntity);
-        saleRepository.save(saleEntity);
+        orderEntity.getSales().add(saleEntity);
+        orderRepository.save(orderEntity);
         return new OrderResponseDto(orderEntity.getId(), productEntity.getName(), saleEntity.getProductQuantity());
     }
 
@@ -62,17 +62,19 @@ public class OrderService {
         OrderEntity orderEntity = orderRepository.findById(orderId)
                 .orElseThrow(OrderNotFoundException::new);
         orderEntity.setOrderDate(LocalDate.now());
-        orderRepository.save(orderEntity);
-
         Long productId = orderUpdateRequestDto.getProductId();
         ProductEntity productEntity = productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
-
-        SaleId saleId = new SaleId(orderEntity.getId(), productEntity.getId());
-        SaleEntity saleEntity = new SaleEntity(saleId, orderUpdateRequestDto.getProductQuantity(), productEntity, orderEntity);
-        saleRepository.save(saleEntity);
+        SaleEntity saleEntity = new SaleEntity(new SaleId(orderEntity.getId(), productEntity.getId()),
+                orderUpdateRequestDto.getProductQuantity(),
+                productEntity,
+                orderEntity
+        );
+        orderEntity.getSales().add(saleEntity);
+        orderRepository.save(orderEntity);
         return new OrderResponseDto(orderEntity.getId(), productEntity.getName(), saleEntity.getProductQuantity());
     }
+
 
     public Boolean deleteOrder(@Valid OrderDto orderDto) {
         UUID id = orderDto.getId();

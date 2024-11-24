@@ -25,18 +25,18 @@ public class JdbcTemplateSalesRepositoryTest {
     }
 
     private void createSchemaAndTestData() {
-        jdbcTemplate.execute("DROP TABLE IF EXISTS sales");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS products");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS orders");
-        jdbcTemplate.execute("CREATE TABLE orders (id UUID PRIMARY KEY, order_date DATE, customer_name VARCHAR(255))");
-        jdbcTemplate.execute("CREATE TABLE products (id LONG PRIMARY KEY, name VARCHAR(255), price DOUBLE)");
-        jdbcTemplate.execute("CREATE TABLE sales (order_id UUID, product_id LONG, product_quantity INT, PRIMARY KEY (order_id, product_id))");
-        jdbcTemplate.execute("INSERT INTO sales (order_id, product_id, product_quantity) VALUES ('a34f9d9e-0544-48b0-b607-ff52be77a249', 1, 3)");
-        jdbcTemplate.execute("INSERT INTO sales (order_id, product_id, product_quantity) VALUES ('b13c1b70-29f6-4746-b8c2-e9c3d209f6e1', 2, 1)");
-        jdbcTemplate.execute("INSERT INTO orders (id, order_date, customer_name) VALUES ('a34f9d9e-0544-48b0-b607-ff52be77a249', '2024-11-22', 'Ivanov')");
-        jdbcTemplate.execute("INSERT INTO orders (id, order_date, customer_name) VALUES ('b13c1b70-29f6-4746-b8c2-e9c3d209f6e1', '2024-11-23', 'Petrov')");
-        jdbcTemplate.execute("INSERT INTO products (id, name, price) VALUES (1, 'Sugar', 100.0)");
-        jdbcTemplate.execute("INSERT INTO products (id, name, price) VALUES (2, 'Bread', 200.0)");
+        jdbcTemplate.execute("DROP TABLE IF EXISTS sale");
+        jdbcTemplate.execute("DROP TABLE IF EXISTS product");
+        jdbcTemplate.execute("DROP TABLE IF EXISTS order");
+        jdbcTemplate.execute("CREATE TABLE order (id UUID PRIMARY KEY, order_date DATE, customer_name VARCHAR(255))");
+        jdbcTemplate.execute("CREATE TABLE product (id LONG PRIMARY KEY, name VARCHAR(255), price DOUBLE)");
+        jdbcTemplate.execute("CREATE TABLE sale (order_id UUID, product_id LONG, product_quantity INT, PRIMARY KEY (order_id, product_id))");
+        jdbcTemplate.execute("INSERT INTO sale (order_id, product_id, product_quantity) VALUES ('a34f9d9e-0544-48b0-b607-ff52be77a249', 1, 3)");
+        jdbcTemplate.execute("INSERT INTO sale (order_id, product_id, product_quantity) VALUES ('b13c1b70-29f6-4746-b8c2-e9c3d209f6e1', 2, 1)");
+        jdbcTemplate.execute("INSERT INTO order (id, order_date, customer_name) VALUES ('a34f9d9e-0544-48b0-b607-ff52be77a249', '2024-11-22', 'Ivanov')");
+        jdbcTemplate.execute("INSERT INTO order (id, order_date, customer_name) VALUES ('b13c1b70-29f6-4746-b8c2-e9c3d209f6e1', '2024-11-23', 'Petrov')");
+        jdbcTemplate.execute("INSERT INTO product (id, name, price) VALUES (1, 'Sugar', 100.0)");
+        jdbcTemplate.execute("INSERT INTO product (id, name, price) VALUES (2, 'Bread', 200.0)");
 
     }
 

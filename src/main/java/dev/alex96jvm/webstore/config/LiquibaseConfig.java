@@ -6,7 +6,6 @@ import liquibase.database.core.PostgresDatabase;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -17,26 +16,20 @@ import java.sql.SQLException;
 @Configuration
 @PropertySource("classpath:application.properties")
 public class LiquibaseConfig {
+    ConfigLoader configLoader;
 
-    @Value("${jdbc.url}")
-    private String jdbcUrl;
-
-    @Value("${jdbc.username}")
-    private String jdbcUsername;
-
-    @Value("${jdbc.password}")
-    private String jdbcPassword;
-
-    @Value("${jdbc.driverClassName}")
-    private String jdbcDriverClassName;
-
-    @Value("${liquibase.change-log}")
-    private String changeLogFile;
+    public LiquibaseConfig() {
+        this.configLoader = new ConfigLoader("application.properties");
+    }
 
     @Bean
     public Liquibase liquibase() throws LiquibaseException, SQLException, ClassNotFoundException {
-        Class.forName(jdbcDriverClassName);
-        Connection connection = DriverManager.getConnection(jdbcUrl, jdbcUsername, jdbcPassword);
+        Class.forName(configLoader.getProperty("jdbc.driverClassName"));
+        String url = configLoader.getProperty("jdbc.url");
+        String user = configLoader.getProperty("jdbc.username");
+        String password = configLoader.getProperty("jdbc.password");
+        String changeLogFile = configLoader.getProperty("liquibase.change-log");
+        Connection connection = DriverManager.getConnection(url, user, password);
         JdbcConnection jdbcConnection = new JdbcConnection(connection);
         Database database = new PostgresDatabase();
         database.setConnection(jdbcConnection);
